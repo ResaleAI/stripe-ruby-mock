@@ -102,10 +102,10 @@ module StripeMock
           customer[:default_source] = new_card[:id]
         end
 
-        allowed_params = %w(customer application_fee_percent coupon items metadata plan quantity source tax_percent trial_end trial_period_days current_period_start created prorate billing_cycle_anchor billing days_until_due idempotency_key enable_incomplete_payments cancel_at_period_end default_tax_rates payment_behavior pending_invoice_item_interval default_payment_method collection_method)
+        allowed_params = %w(customer application_fee_percent coupon items metadata plan quantity source tax_percent trial_end trial_period_days current_period_start created proration_behavior promotion_code billing_cycle_anchor billing_thresholds days_until_due idempotency_key enable_incomplete_payments cancel_at_period_end default_tax_rates payment_behavior pending_invoice_item_interval default_payment_method collection_method add_invoice_items backdate_start_date default_source off_session transfer_data trial_from_plan)
         unknown_params = params.keys - allowed_params.map(&:to_sym)
         if unknown_params.length > 0
-          raise Stripe::InvalidRequestError.new("Received unknown parameter: #{unknown_params.join}", unknown_params.first.to_s, http_status: 400)
+          raise Stripe::InvalidRequestError.new("Received unknown parameter: #{unknown_params.join(' ')}", unknown_params.first.to_s, http_status: 400)
         end
 
         subscription = Data.mock_subscription({ id: (params[:id] || new_id('su')) })
